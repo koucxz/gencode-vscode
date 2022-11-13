@@ -1,0 +1,74 @@
+{
+  "name": "gencode-vscode",
+  "displayName": "GenCode",
+  "description": "Generate code from the current file and related workspace files.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:html",
+    "onLanguage:wxml",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onCommand:gencode.generate"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "wxml",
+        "aliases": ["WXML", "wxml"],
+        "extensions": [".wxml"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "gencode.generate",
+        "title": "GenCode: Generate Code"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "gencode.confirmGenerate",
+        "key": "shift+enter",
+        "when": "editorTextFocus && gencode.invocationAtCursor && resourceLangId in html,wxml,javascript,typescript"
+      }
+    ],
+    "configuration": {
+      "title": "GenCode",
+      "properties": {
+        "gencode.pythonPath": {
+          "type": "string",
+          "default": "python",
+          "description": "Python executable used by the GenCode backend."
+        },
+        "gencode.baseUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Optional OpenAI-compatible API base URL."
+        },
+        "gencode.model": {
+          "type": "string",
+          "default": "text-davinci-003",
+          "description": "Completion model passed to the historical LangChain client."
+        },
+        "gencode.maxContextChars": {
+          "type": "number",
+          "default": 24000,
+          "minimum": 1000,
+          "description": "Maximum number of context characters sent to the model."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "node --check extension.js",
+    "test": "python -m pytest",
+    "package": "npm run compile && npm test"
+  }
+}
+
