@@ -1,0 +1,3 @@
+# Direct runtime pins used by the 2022-11 LangChain backend.
+langchain==0.0.25
+openai==0.25.0
